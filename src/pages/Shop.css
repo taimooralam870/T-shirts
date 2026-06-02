@@ -1,0 +1,242 @@
+/* Shop Page - Apple Aesthetic */
+.shop-page {
+  padding-top: var(--spacing-2xl);
+  padding-bottom: var(--spacing-3xl);
+  animation: pageFadeIn 0.5s ease-out;
+  background-color: #ffffff; /* Pure white background */
+}
+
+/* Header Section */
+.shop-header-container {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.shop-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: -0.03em;
+}
+
+.shop-subtitle {
+  font-size: 1.25rem;
+  color: #6b7280;
+  font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-results-text {
+  margin-top: var(--spacing-md);
+  color: #6b7280;
+  font-size: 1.125rem;
+}
+
+/* Trending Section */
+.trending-section {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-lg);
+  color: var(--primary);
+}
+
+.trending-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+  .trending-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Sticky Filter Bar */
+.sticky-filter-bar {
+  position: sticky;
+  top: 4.5rem; /* Adjust based on navbar height */
+  z-index: 40;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: var(--spacing-md) 0;
+  margin-bottom: var(--spacing-xl);
+  transition: all var(--transition-normal);
+}
+
+.filter-bar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 992px) {
+  .filter-bar-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* Category Pills */
+.category-pills {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  padding-bottom: 4px; /* for scrollbar */
+  scrollbar-width: none; /* Firefox */
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.pill-btn {
+  white-space: nowrap;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.pill-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.pill-btn.active {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Inline Filters */
+.inline-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.filter-dropdown {
+  position: relative;
+}
+
+.filter-dropdown select {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  padding: 0.4rem 2rem 0.4rem 1rem;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--primary);
+  outline: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-dropdown select:hover,
+.filter-dropdown select:focus {
+  border-color: #d1d5db;
+  background-color: #f9fafb;
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #6b7280;
+}
+
+.clear-filters-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-decoration: underline;
+  padding: 0 0.5rem;
+  transition: color var(--transition-fast);
+}
+
+.clear-filters-text:hover {
+  color: var(--primary);
+}
+
+/* Main Grid */
+.shop-main {
+  min-height: 50vh;
+}
+
+.results-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.results-count {
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--spacing-xl) var(--spacing-lg);
+}
+
+@media (min-width: 640px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-3xl) 0;
+  background-color: #f9fafb;
+  border-radius: var(--radius-2xl);
+  margin-top: var(--spacing-xl);
+}
+
+.empty-state-content {
+  text-align: center;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  color: var(--primary);
+}
+
+.empty-state p {
+  color: #6b7280;
+}
