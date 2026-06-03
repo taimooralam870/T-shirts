@@ -424,22 +424,20 @@
 }
 
 .minimal-subscribe {
-  max-width: 400px;
+  max-width: 420px;
   margin: 0 auto;
   display: flex;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-  padding-bottom: var(--spacing-xs);
-  transition: border-color var(--transition-fast);
-}
-
-@media (min-width: 768px) {
-  .minimal-subscribe {
-    padding-bottom: var(--spacing-sm);
-  }
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  padding: 0.25rem 0.25rem 0.25rem 1.25rem;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .minimal-subscribe:focus-within {
-  border-color: white;
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .minimal-subscribe input {
@@ -447,13 +445,16 @@
   background: transparent;
   border: none;
   color: white;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   outline: none;
+  font-family: inherit;
+  min-width: 0;
+  -webkit-appearance: none;
 }
 
 @media (min-width: 768px) {
   .minimal-subscribe input {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 }
 
@@ -461,12 +462,35 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+/* Fix browser autofill background */
+.minimal-subscribe input:-webkit-autofill,
+.minimal-subscribe input:-webkit-autofill:hover,
+.minimal-subscribe input:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  box-shadow: 0 0 0 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: white;
+}
+
 .minimal-subscribe button {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 300;
+  background: white;
+  color: var(--primary);
+  border: none;
+  border-radius: 9999px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
 }
 
 .minimal-subscribe button:hover {
-  transform: translateX(4px);
+  background: #f3f4f6;
+  transform: scale(1.05);
 }

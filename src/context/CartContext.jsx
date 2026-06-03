@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
@@ -11,6 +11,7 @@ export const CartProvider = ({ children }) => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -32,6 +33,8 @@ export const CartProvider = ({ children }) => {
 
       return [...prevItems, { ...product, quantity, selectedSize: size }];
     });
+    
+    setIsCartDrawerOpen(true);
   };
 
   const removeFromCart = (productId, size) => {
@@ -51,12 +54,19 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const openCartDrawer = () => setIsCartDrawerOpen(true);
+  const closeCartDrawer = () => setIsCartDrawerOpen(false);
+
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
 
   return (
     <CartContext.Provider
@@ -66,7 +76,11 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         updateQuantity,
         cartTotal,
-        cartCount
+        cartCount,
+        clearCart,
+        isCartDrawerOpen,
+        openCartDrawer,
+        closeCartDrawer
       }}
     >
       {children}

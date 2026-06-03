@@ -53,7 +53,7 @@ const Contact = () => {
               <div className="info-icon"><MapPin /></div>
               <div>
                 <h3>Our Store</h3>
-                <p className="text-muted">123 Fashion Street<br />New York, NY 10001<br />United States</p>
+                <p className="text-muted">Lahore<br />Imtiaz markeet <br />Pakistan</p>
               </div>
             </div>
 
@@ -61,7 +61,7 @@ const Contact = () => {
               <div className="info-icon"><Phone /></div>
               <div>
                 <h3>Phone</h3>
-                <p className="text-muted">+1 (555) 123-4567<br />Mon-Fri, 9am-6pm EST</p>
+                <p className="text-muted">+923175992862<br />Mon-Fri, 9am-6pm EST</p>
               </div>
             </div>
 
@@ -69,7 +69,7 @@ const Contact = () => {
               <div className="info-icon"><Mail /></div>
               <div>
                 <h3>Email</h3>
-                <p className="text-muted">support@Mentastic.com<br />hello@Mentastic.com</p>
+                <p className="text-muted">support@Mentastic.com<br />taimooralam870@gmail.com</p>
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@ const Contact = () => {
               <div className="map-dummy-content">
                 <MapPin size={48} className="text-accent mb-2" />
                 <p>Interactive Map View</p>
-                <span className="text-sm text-muted">123 Fashion Street, NY</span>
+                <span className="text-sm text-muted">lahor Imtiaz Markeet Pakistan</span>
               </div>
             </div>
           </div>

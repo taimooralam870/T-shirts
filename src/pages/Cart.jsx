@@ -2,23 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, ArrowRight, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useProducts } from '../context/ProductContext';
 import Button from '../components/Button';
 import ProductCard from '../components/ProductCard';
-import productsData from '../data/products.json';
 import './Cart.css';
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const { products } = useProducts();
   const [recommendedProducts, setRecommendedProducts] = useState([]);
 
   useEffect(() => {
-    // Get recommended products - exclude items already in cart
     const cartItemIds = new Set(cartItems.map(item => item.id));
-    const recommended = productsData
+    const recommended = products
       .filter(p => !cartItemIds.has(p.id) && p.isPopular)
       .slice(0, 4);
     setRecommendedProducts(recommended);
-  }, [cartItems]);
+  }, [cartItems, products]);
 
   if (cartItems.length === 0) {
     return (
@@ -54,13 +54,21 @@ const Cart = () => {
                   <img src={item.image} alt={item.name} className="cart-item-image" />
                   <div className="cart-item-info">
                     <h3><Link to={`/product/${item.id}`}>{item.name}</Link></h3>
-                    <p className="text-muted">Size: {item.selectedSize}</p>
-                    <p className="cart-item-price-mobile">Rs. {item.price.toLocaleString()}</p>
+                    <p className="text-muted" style={{fontSize:'0.82rem'}}>Size: {item.selectedSize}</p>
+                    {/* Mobile: price + qty in one row */}
+                    <div className="cart-item-mobile-row">
+                      <span className="cart-item-price-mobile">Rs. {(item.price * item.quantity).toLocaleString()}</span>
+                      <div className="qty-mobile">
+                        <button onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}>−</button>
+                        <span>{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}>+</button>
+                      </div>
+                    </div>
                     <button 
                       className="remove-btn"
                       onClick={() => removeFromCart(item.id, item.selectedSize)}
                     >
-                      <Trash2 size={16} /> Remove
+                      <Trash2 size={14} /> Remove
                     </button>
                   </div>
                 </div>
@@ -100,9 +108,11 @@ const Cart = () => {
             <span>Total</span>
             <span>Rs. {cartTotal.toLocaleString()}</span>
           </div>
-          <Button size="lg" className="checkout-btn mt-4 w-full">
-            Proceed to Checkout <ArrowRight size={18} className="ml-2" />
-          </Button>
+          <Link to="/checkout" className="checkout-link">
+            <Button size="lg" className="checkout-btn mt-4 w-full">
+              Proceed to Checkout <ArrowRight size={18} className="ml-2" />
+            </Button>
+          </Link>
         </div>
       </div>
 

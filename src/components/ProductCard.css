@@ -62,12 +62,19 @@
 
 .product-header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: var(--spacing-xs);
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
-
+.product-detail-page{
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+.swiper-navigation-icon{
+width: 14px !important;
+height: 14px !important;
+}
 .product-title {
   font-size: 0.9rem;
   font-weight: 600;

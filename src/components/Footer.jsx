@@ -34,11 +34,11 @@ const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-heading">Customer Service</h4>
             <ul className="footer-links">
-              <li><a href="#">FAQ</a></li>
-              <li><a href="#">Shipping & Returns</a></li>
-              <li><a href="#">Size Guide</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
+              <li><Link to="/faq">FAQ</Link></li>
+              <li><Link to="/shipping-returns">Shipping &amp; Returns</Link></li>
+              <li><Link to="/size-guide">Size Guide</Link></li>
+              <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service">Terms of Service</Link></li>
             </ul>
           </div>
 
@@ -47,15 +47,15 @@ const Footer = () => {
             <ul className="footer-contact">
               <li>
                 <MapPin size={16} />
-                <span>123 Fashion Street, NY 10001, USA</span>
+                <span>lahore Imtiaz Markeet Pakistan</span>
               </li>
               <li>
                 <Phone size={16} />
-                <span>+1 (555) 123-4567</span>
+                <span>+923175992862</span>
               </li>
               <li>
                 <Mail size={16} />
-                <span>hello@Mentastic.com</span>
+                <span>taimooralam870@gmail.com</span>
               </li>
             </ul>
           </div>

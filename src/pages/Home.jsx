@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-import productsData from '../data/products.json';
+import { useProducts } from '../context/ProductContext';
 import './Home.css';
 
 const Home = () => {
+  const { products, loading } = useProducts();
+
   return (
     <div className="home-page">
       {/* Premium Immersive Hero */}
@@ -45,18 +47,22 @@ const Home = () => {
             <Link to="/shop" className="minimal-link">View All</Link>
           </div>
           
-          <div className="modern-grid">
-            {productsData.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="loading-spinner">Loading...</div>
+          ) : (
+            <div className="modern-grid">
+              {products.map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Edge-to-Edge Category Banners */}
       <section className="category-split">
         <Link to="/shop?category=Men" className="split-pane">
-          <img src="https://images.unsplash.com/photo-1516826957135-700ede19c6ce?auto=format&fit=crop&q=80&w=1200" alt="Men" />
+          <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80&w=1200" alt="Men" />
           <div className="split-overlay">
             <h2>MENSWEAR</h2>
           </div>

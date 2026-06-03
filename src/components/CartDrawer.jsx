@@ -1,23 +1,36 @@
-import { X, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
+import { X, ShoppingBag, Trash2, ArrowRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useState, useEffect } from 'react';
+import productsData from '../data/products.json';
 import Button from './Button';
 import './CartDrawer.css';
 
 const CartDrawer = ({ isOpen, onClose }) => {
-  const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, cartTotal, addToCart } = useCart();
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    if (isOpen && cartItems.length > 0) {
+      const cartItemIds = new Set(cartItems.map(item => item.id));
+      const cartCategories = new Set(cartItems.map(item => item.category));
+      
+      const recommended = productsData
+        .filter(p => !cartItemIds.has(p.id) && cartCategories.has(p.category))
+        .slice(0, 3);
+      
+      setSuggestions(recommended);
+    }
+  }, [isOpen, cartItems]);
 
   return (
     <>
-      {/* Overlay */}
       <div 
         className={`cart-drawer-overlay ${isOpen ? 'active' : ''}`}
         onClick={onClose}
       />
 
-      {/* Drawer */}
       <div className={`cart-drawer ${isOpen ? 'open' : ''}`}>
-        {/* Header */}
         <div className="cart-drawer-header">
           <h2>
             <ShoppingBag size={24} />
@@ -28,7 +41,6 @@ const CartDrawer = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Content */}
         <div className="cart-drawer-content">
           {cartItems.length === 0 ? (
             <div className="cart-drawer-empty">
@@ -40,8 +52,12 @@ const CartDrawer = ({ isOpen, onClose }) => {
             </div>
           ) : (
             <>
-              {/* Cart Items */}
               <div className="cart-drawer-items">
+                <div className="drawer-success-badge">
+                  <Sparkles size={16} />
+                  <span>Item added to cart!</span>
+                </div>
+
                 {cartItems.map(item => (
                   <div key={`${item.id}-${item.selectedSize}`} className="cart-drawer-item">
                     <img src={item.image} alt={item.name} />
@@ -81,9 +97,38 @@ const CartDrawer = ({ isOpen, onClose }) => {
                     </button>
                   </div>
                 ))}
+
+                {suggestions.length > 0 && (
+                  <div className="drawer-suggestions">
+                    <div className="suggestions-header">
+                      <Sparkles size={18} />
+                      <h3>You May Also Like</h3>
+                    </div>
+                    <div className="suggestions-grid">
+                      {suggestions.map(product => (
+                        <div key={product.id} className="suggestion-card">
+                          <Link to={`/product/${product.id}`} onClick={onClose}>
+                            <img src={product.image} alt={product.name} />
+                          </Link>
+                          <div className="suggestion-info">
+                            <Link to={`/product/${product.id}`} onClick={onClose} className="suggestion-name">
+                              {product.name}
+                            </Link>
+                            <p className="suggestion-price">Rs. {product.price.toLocaleString()}</p>
+                            <button 
+                              className="suggestion-add-btn"
+                              onClick={() => addToCart(product, 1, product.sizes[0])}
+                            >
+                              Quick Add
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Footer */}
               <div className="cart-drawer-footer">
                 <div className="subtotal">
                   <span>Subtotal</span>

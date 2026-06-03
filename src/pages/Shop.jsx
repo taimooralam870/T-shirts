@@ -2,15 +2,17 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import productsData from '../data/products.json';
+import { useProducts } from '../context/ProductContext';
 import './Shop.css';
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { products: allProducts, loading } = useProducts();
+  
   const initialCategory = searchParams.get('category') || 'All';
   const initialSearch = searchParams.get('search') || '';
 
-  const [products, setProducts] = useState(productsData);
+  const [products, setProducts] = useState([]);
   
   // Filters state
   const [category, setCategory] = useState(initialCategory);
@@ -22,18 +24,18 @@ const Shop = () => {
   const categories = ['All', 'Men', 'Women', 'Unisex'];
   const sizes = ['All', 'S', 'M', 'L', 'XL'];
   const priceRanges = [
-    { label: 'All', min: 0, max: 1000 },
-    { label: 'Under $30', min: 0, max: 30 },
-    { label: '$30 - $40', min: 30, max: 40 },
-    { label: 'Over $40', min: 40, max: 1000 }
+    { label: 'All', min: 0, max: 100000 },
+    { label: 'Under Rs. 1500', min: 0, max: 1500 },
+    { label: 'Rs. 1500 - Rs. 2500', min: 1500, max: 2500 },
+    { label: 'Over Rs. 2500', min: 2500, max: 100000 }
   ];
 
   // Derived Trending Picks
   const trendingPicks = useMemo(() => {
-    return [...productsData]
+    return [...allProducts]
       .sort((a, b) => b.rating - a.rating)
       .slice(0, 3); // Top 3 rated
-  }, []);
+  }, [allProducts]);
 
   useEffect(() => {
     // Update local state when URL params change
@@ -44,7 +46,7 @@ const Shop = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    let filtered = [...productsData];
+    let filtered = [...allProducts];
 
     // Search filter
     if (searchQuery) {
@@ -90,7 +92,7 @@ const Shop = () => {
     }
 
     setProducts(filtered);
-  }, [category, priceRange, size, sort, searchQuery]);
+  }, [category, priceRange, size, sort, searchQuery, allProducts]);
 
   const clearFilters = () => {
     setCategory('All');
@@ -187,7 +189,9 @@ const Shop = () => {
           <p className="results-count">{products.length} Products</p>
         </div>
 
-        {products.length > 0 ? (
+        {loading ? (
+          <div className="loading-spinner">Loading products...</div>
+        ) : products.length > 0 ? (
           <div className="product-grid">
             {products.map(product => (
               <ProductCard key={product.id} product={product} />

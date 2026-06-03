@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, Truck, Shield, ArrowLeft, Zap, Eye, CheckCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useProducts } from '../context/ProductContext';
 import ProductCard from '../components/ProductCard';
-import productsData from '../data/products.json';
 // Swiper imports
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Thumbs, EffectFade, Autoplay } from 'swiper/modules';
@@ -35,50 +35,46 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  
+  const { products } = useProducts();
+
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [liveViewers, setLiveViewers] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  
+
   // Urgency Timer State
   const [timeLeft, setTimeLeft] = useState({ hours: 4, minutes: 29, seconds: 59 });
 
-  // Sticky Cart State
-  const [showStickyCart, setShowStickyCart] = useState(false);
-  const mainCartAreaRef = useRef(null);
-
   useEffect(() => {
-    const foundProduct = productsData.find(p => p.id === id);
+    if (products.length === 0) return;
+
+    const foundProduct = products.find(p => p.id === id);
     if (foundProduct) {
       setProduct(foundProduct);
       setSelectedSize(foundProduct.sizes[0]);
-      
+
       // Find related products - first try category, then fallback to popular
-      let related = productsData
+      let related = products
         .filter(p => p.category === foundProduct.category && p.id !== id)
         .slice(0, 4);
-      
+
       // If not enough related products, add popular ones
       if (related.length < 4) {
-        const popularProducts = productsData
+        const popularProducts = products
           .filter(p => p.isPopular && p.id !== id && !related.find(r => r.id === p.id))
           .slice(0, 4 - related.length);
         related = [...related, ...popularProducts];
       }
-      
-      setRelatedProducts(related);
-      
-      // Randomize live viewers for CRO effect
-      setLiveViewers(Math.floor(Math.random() * 25) + 12);
 
+      setRelatedProducts(related);
+      setLiveViewers(Math.floor(Math.random() * 25) + 12);
       window.scrollTo(0, 0);
     } else {
       navigate('/shop');
     }
-  }, [id, navigate]);
+  }, [id, navigate, products]);
 
   // Countdown timer logic
   useEffect(() => {
@@ -87,35 +83,25 @@ const ProductDetail = () => {
         if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
         if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
         if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return { hours: 4, minutes: 29, seconds: 59 }; // reset for demo
+        return { hours: 4, minutes: 29, seconds: 59 };
       });
     }, 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Scroll listener for sticky cart
-  useEffect(() => {
-    const handleScroll = () => {
-      if (mainCartAreaRef.current) {
-        const rect = mainCartAreaRef.current.getBoundingClientRect();
-        // Show sticky bar when main add to cart button is scrolled out of view (above viewport)
-        setShowStickyCart(rect.bottom < 0);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  if (!product) return null;
+  if (!product) return (
+    <div className="product-detail-page section container">
+      <div className="loading-spinner">Loading product...</div>
+    </div>
+  );
 
   const handleAddToCart = () => {
     addToCart(product, quantity, selectedSize);
-    // Vibrate or show toast for feedback (simulated)
     if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
   };
 
-  const discountPercentage = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
+  const discountPercentage = product.originalPrice
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
   return (
@@ -125,7 +111,7 @@ const ProductDetail = () => {
       </Link>
 
       <div className="product-detail-grid">
-        {/* Images Gallery with High-End Swiper */}
+        {/* Images Gallery */}
         <div className="product-gallery">
           <div className="main-image-container relative">
             <Swiper
@@ -152,12 +138,12 @@ const ProductDetail = () => {
                 <img src={product.image} alt={`${product.name} alternate view 2`} className="main-image" style={{ filter: 'grayscale(10%)' }} />
               </SwiperSlide>
             </Swiper>
-            
+
             {discountPercentage > 0 && (
               <span className="sales-badge-large z-10">Save {discountPercentage}%</span>
             )}
           </div>
-          
+
           <div className="thumbnail-list-container">
             <Swiper
               onSwiper={setThumbsSwiper}
@@ -181,7 +167,7 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Product Info - CRO Optimized */}
+        {/* Product Info */}
         <div className="product-info-container">
           {/* Social Proof Bar */}
           <div className="product-meta-bar">
@@ -193,7 +179,7 @@ const ProductDetail = () => {
           </div>
 
           <h1 className="product-title-huge">{product.name}</h1>
-          
+
           <div className="product-rating-cro mb-4 cursor-pointer hover-opacity">
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
@@ -213,7 +199,7 @@ const ProductDetail = () => {
               </>
             )}
           </div>
-          
+
           {/* Urgency Timer */}
           <div className="urgency-banner">
             <div className="urgency-icon">
@@ -224,7 +210,7 @@ const ProductDetail = () => {
               <p className="text-sm text-gray-600">for dispatch today and next-day delivery.</p>
             </div>
           </div>
-          
+
           <p className="product-description-premium">{product.description}</p>
 
           {/* Scarcity Indicator */}
@@ -254,8 +240,8 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Main Add to Cart Block */}
-          <div className="cart-actions-premium" ref={mainCartAreaRef}>
+          {/* Add to Cart */}
+          <div className="cart-actions-premium">
             <div className="quantity-selector-premium">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="qty-btn">-</button>
               <span className="qty-value">{quantity}</span>
@@ -283,7 +269,7 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Accordions for Details */}
+          {/* Accordions */}
           <div className="product-accordions">
             <AccordionItem title="Product Details & Materials" defaultOpen={true}>
               <ul className="list-disc pl-5 text-gray-600 space-y-2">
@@ -301,7 +287,6 @@ const ProductDetail = () => {
               <p className="text-gray-600">Machine wash cold inside out with like colors. Tumble dry low. Do not iron decoration.</p>
             </AccordionItem>
           </div>
-
         </div>
       </div>
 
@@ -316,25 +301,6 @@ const ProductDetail = () => {
           </div>
         </div>
       )}
-
-      {/* Sticky Cart Bar (Desktop/Mobile) */}
-      <div className={`sticky-cart-bar ${showStickyCart ? 'visible' : ''}`}>
-        <div className="container sticky-cart-inner">
-          <div className="sticky-product-info">
-            <img src={product.image} alt={product.name} className="sticky-img" />
-            <div className="sticky-details">
-              <h4 className="sticky-title">{product.name}</h4>
-              <span className="sticky-price">Rs. {product.price.toLocaleString()}</span>
-            </div>
-          </div>
-          <div className="sticky-actions">
-            <button className="add-to-cart-massive compact" onClick={handleAddToCart}>
-              Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
     </div>
   );
 };
