@@ -20,6 +20,7 @@ import SizeGuide from './pages/SizeGuide';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import FAQ from './pages/FAQ';
+import TrackOrder from './pages/TrackOrder';
 
 // Admin
 import AdminLogin from './pages/admin/AdminLogin';
@@ -61,6 +62,7 @@ function App() {
               <Route path="/privacy-policy"   element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/faq"              element={<FAQ />} />
+              <Route path="/track-order"      element={<TrackOrder />} />
 
               {/* Admin */}
               <Route path="/admin"           element={<AdminLogin />} />

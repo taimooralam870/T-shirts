@@ -35,6 +35,7 @@ const Footer = () => {
             <h4 className="footer-heading">Customer Service</h4>
             <ul className="footer-links">
               <li><Link to="/faq">FAQ</Link></li>
+              <li><Link to="/track-order">Track Order</Link></li>
               <li><Link to="/shipping-returns">Shipping &amp; Returns</Link></li>
               <li><Link to="/size-guide">Size Guide</Link></li>
               <li><Link to="/privacy-policy">Privacy Policy</Link></li>

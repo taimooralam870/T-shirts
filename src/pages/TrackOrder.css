@@ -1,0 +1,431 @@
+/* ── Track Order Page ── */
+.track-order-page {
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-3xl);
+  max-width: 760px;
+  margin: 0 auto;
+  animation: pageFadeIn 0.4s ease-out;
+}
+
+.track-order-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.track-header-icon {
+  color: var(--primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.track-order-header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+}
+
+@media (min-width: 640px) { .track-order-header h1 { font-size: 2.2rem; } }
+
+.track-order-header p {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* Search Box */
+.track-search-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 540px) {
+  .track-search-box {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.track-input-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.track-search-icon {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.track-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 2.5rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: border-color var(--transition-fast);
+  text-transform: uppercase;
+}
+
+.track-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(17,24,39,0.07);
+}
+
+/* Error */
+.track-error {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff0f0;
+  border: 1px solid #fca5a5;
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+  color: #b91c1c;
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Result Card */
+.track-result {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  animation: pageFadeIn 0.35s ease-out;
+}
+
+.track-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid #f3f4f6;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: #fafafa;
+}
+
+.track-order-id {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.04em;
+}
+
+.track-placed-date {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 0.2rem;
+}
+
+.track-status-badge {
+  padding: 0.35rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* Timeline */
+.track-timeline {
+  display: flex;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+  gap: 0;
+  overflow-x: auto;
+}
+
+@media (max-width: 540px) {
+  .track-timeline {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.track-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 80px;
+}
+
+@media (max-width: 540px) {
+  .track-step {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: unset;
+    flex: unset;
+    padding-bottom: var(--spacing-sm);
+  }
+}
+
+.track-step-connector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 540px) {
+  .track-step-connector {
+    flex-direction: column;
+    width: auto;
+    align-items: center;
+  }
+}
+
+.track-step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #9ca3af;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.track-step-circle.filled {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.track-step.active .track-step-circle {
+  box-shadow: 0 0 0 4px rgba(17,24,39,0.12);
+}
+
+.track-step-line {
+  height: 2px;
+  flex: 1;
+  background: #e5e7eb;
+  transition: background 0.3s ease;
+}
+
+.track-step-line.filled { background: var(--primary); }
+
+@media (max-width: 540px) {
+  .track-step-line {
+    width: 2px;
+    height: 24px;
+    flex: none;
+  }
+}
+
+.track-step-info {
+  text-align: center;
+  margin-top: 0.6rem;
+  padding: 0 0.25rem;
+}
+
+@media (max-width: 540px) {
+  .track-step-info {
+    text-align: left;
+    margin-top: 0.4rem;
+  }
+}
+
+.track-step-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+.track-step.completed .track-step-label,
+.track-step.active .track-step-label {
+  color: var(--primary);
+}
+
+.track-step-desc {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  margin-top: 0.15rem;
+}
+
+.track-step.active .track-step-desc { color: #4b5563; }
+
+/* Cancelled Banner */
+.track-cancelled-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff0f0;
+  color: #b91c1c;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #fca5a5;
+}
+
+/* Details Grid */
+.track-details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid #f3f4f6;
+}
+
+@media (min-width: 600px) {
+  .track-details-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.track-card {
+  background: #fafafa;
+  border: 1px solid #f3f4f6;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.track-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.track-card p {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-bottom: 0.2rem;
+  line-height: 1.5;
+}
+
+.track-contact {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.track-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #4b5563;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.track-summary-row:last-child { border-bottom: none; }
+
+.track-total-row {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.track-coupon {
+  color: #15803d;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+/* Items */
+.track-items-section {
+  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  border-top: 1px solid #f3f4f6;
+}
+
+.track-items-section h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.track-items-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.track-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f9fafb;
+}
+
+.track-item:last-child { border-bottom: none; }
+
+.track-item-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: #f3f4f6;
+  flex-shrink: 0;
+}
+
+.track-item-info { flex: 1; min-width: 0; }
+
+.track-item-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-item-meta {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-top: 0.15rem;
+}
+
+.track-item-price {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* Empty Hint */
+.track-empty-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  color: #9ca3af;
+  gap: var(--spacing-sm);
+}
+
+.track-empty-hint p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.track-empty-hint span {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* Spin */
+.spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }

@@ -3,6 +3,7 @@
 -- Products Table
 CREATE TABLE IF NOT EXISTS products (
   id TEXT PRIMARY KEY,
+  sku TEXT UNIQUE,
   name TEXT NOT NULL,
   description TEXT,
   price INTEGER NOT NULL,
@@ -20,6 +21,9 @@ CREATE TABLE IF NOT EXISTS products (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- If table already exists, add SKU column:
+-- ALTER TABLE products ADD COLUMN IF NOT EXISTS sku TEXT UNIQUE;
+
 -- Orders Table
 CREATE TABLE IF NOT EXISTS orders (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -35,9 +39,25 @@ CREATE TABLE IF NOT EXISTS orders (
   payment_method TEXT NOT NULL,
   items JSONB NOT NULL,
   total INTEGER NOT NULL,
+  coupon_code TEXT,
+  discount INTEGER DEFAULT 0,
   status TEXT DEFAULT 'pending',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Coupons Table
+CREATE TABLE IF NOT EXISTS coupons (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  code TEXT UNIQUE NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('percentage', 'fixed')),
+  value INTEGER NOT NULL,
+  min_order INTEGER DEFAULT 0,
+  max_uses INTEGER DEFAULT NULL,
+  used_count INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  expires_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Enable Row Level Security (RLS)
@@ -67,6 +87,21 @@ CREATE POLICY "Allow public read on orders" ON orders
 
 CREATE POLICY "Allow public update on orders" ON orders
   FOR UPDATE USING (true);
+
+-- Coupons policies
+ALTER TABLE coupons ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public read on coupons" ON coupons
+  FOR SELECT USING (true);
+CREATE POLICY "Allow public update on coupons" ON coupons
+  FOR UPDATE USING (true);
+CREATE POLICY "Allow public insert on coupons" ON coupons
+  FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public delete on coupons" ON coupons
+  FOR DELETE USING (true);
+
+-- Orders: add coupon fields (run if table already exists)
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS coupon_code TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS discount INTEGER DEFAULT 0;
 
 -- Insert initial products data
 INSERT INTO products (id, name, description, price, category, color, sizes, rating, reviews, image, "isNewArrival", "isPopular", stock, "originalPrice") VALUES
