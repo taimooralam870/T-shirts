@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import productsData from '../data/products.json';
 
 const ProductContext = createContext();
@@ -15,6 +15,13 @@ export const ProductProvider = ({ children }) => {
 
   // Fetch products from Supabase
   const fetchProducts = async () => {
+    // If Supabase is not properly configured, use local data immediately
+    if (!isSupabaseConfigured) {
+      setProducts(productsData);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       const { data, error } = await supabase

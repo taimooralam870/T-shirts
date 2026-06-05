@@ -107,12 +107,25 @@ const Shop = () => {
 
   return (
     <div className="shop-page">
-      {/* Hero / Header Section */}
-      <div className="shop-header-container container">
-        <h1 className="shop-title">The Collection</h1>
-        <p className="shop-subtitle">Discover our latest arrivals and timeless classics.</p>
-        {searchQuery && <p className="search-results-text">Search results for "{searchQuery}"</p>}
-      </div>
+      {/* Hero */}
+      {!searchQuery ? (
+        <div className="shop-hero">
+          <div className="container">
+            <div className="shop-hero-inner">
+              <div className="shop-hero-text">
+                <h1>The Collection</h1>
+                <p>Premium tees crafted for everyday wear.</p>
+              </div>
+              <span className="shop-results-count">{products.length} products</span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="shop-header-container container text-center">
+          <h1 className="shop-title">Search Results</h1>
+          <p className="search-results-text">Showing results for "{searchQuery}"</p>
+        </div>
+      )}
 
       {/* Trending Picks Section */}
       {!searchQuery && category === 'All' && (

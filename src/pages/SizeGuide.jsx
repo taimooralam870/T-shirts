@@ -19,103 +19,104 @@ const SizeGuide = () => {
   ];
 
   return (
-    <div className="policy-page section container">
-      <div className="policy-breadcrumb">
-        <Link to="/">Home</Link> / <span>Size Guide</span>
-      </div>
-
-      <div className="policy-hero">
-        <Ruler size={40} />
-        <h1>Size Guide</h1>
-        <p>Find your perfect fit with our detailed size charts.</p>
-      </div>
-
-      {/* How to Measure */}
-      <div className="policy-card measure-card">
-        <h2>How to Measure</h2>
-        <div className="measure-grid">
-          <div className="measure-item">
-            <span className="measure-icon">📏</span>
-            <h4>Chest</h4>
-            <p>Measure around the fullest part of your chest, keeping the tape horizontal.</p>
+    <div className="policy-page">
+      {/* Hero */}
+      <div className="policy-hero-banner">
+        <div className="container">
+          <div className="policy-breadcrumb">
+            <Link to="/">Home</Link> / <span>Size Guide</span>
           </div>
-          <div className="measure-item">
-            <span className="measure-icon">📐</span>
-            <h4>Waist</h4>
-            <p>Measure around your natural waistline, keeping the tape comfortably loose.</p>
-          </div>
-          <div className="measure-item">
-            <span className="measure-icon">📋</span>
-            <h4>Length</h4>
-            <p>Measure from the highest point of the shoulder down to the desired length.</p>
-          </div>
+          <div className="policy-hero-icon"><Ruler size={24} /></div>
+          <h1>Size Guide</h1>
+          <p>Find your perfect fit with our detailed measurement charts.</p>
         </div>
       </div>
 
-      {/* Men's Chart */}
-      <div className="policy-card">
-        <h2>Men's / Unisex Size Chart</h2>
-        <div className="size-table-wrapper">
-          <table className="size-table">
-            <thead>
-              <tr>
-                <th>Size</th>
-                <th>Chest</th>
-                <th>Waist</th>
-                <th>Length</th>
-                <th>Weight</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mensChart.map(row => (
-                <tr key={row.size}>
-                  <td><span className="size-badge">{row.size}</span></td>
-                  <td>{row.chest}</td>
-                  <td>{row.waist}</td>
-                  <td>{row.length}</td>
-                  <td>{row.weight}</td>
+      <div className="container">
+        {/* How to Measure */}
+        <div className="policy-card">
+          <h2>How to Measure</h2>
+          <div className="policy-info-grid">
+            <div className="policy-info-item">
+              <h4>Chest</h4>
+              <p>Measure around the fullest part of your chest, tape horizontal and level.</p>
+            </div>
+            <div className="policy-info-item">
+              <h4>Waist</h4>
+              <p>Measure around your natural waistline, keeping the tape comfortably loose.</p>
+            </div>
+            <div className="policy-info-item">
+              <h4>Length</h4>
+              <p>Measure from the highest shoulder point straight down to the hem.</p>
+            </div>
+            <div className="policy-info-item">
+              <h4>Tip</h4>
+              <p>Between sizes? Size up for a relaxed fit or down for a fitted look.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Men's */}
+        <div className="policy-card">
+          <h2>Men's / Unisex Size Chart</h2>
+          <div className="size-table-wrapper">
+            <table className="size-table">
+              <thead>
+                <tr>
+                  <th>Size</th>
+                  <th>Chest</th>
+                  <th>Waist</th>
+                  <th>Length</th>
+                  <th>Weight</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {mensChart.map(row => (
+                  <tr key={row.size}>
+                    <td>{row.size}</td>
+                    <td>{row.chest}</td>
+                    <td>{row.waist}</td>
+                    <td>{row.length}</td>
+                    <td>{row.weight}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      {/* Women's Chart */}
-      <div className="policy-card">
-        <h2>Women's Size Chart</h2>
-        <div className="size-table-wrapper">
-          <table className="size-table">
-            <thead>
-              <tr>
-                <th>Size</th>
-                <th>Chest</th>
-                <th>Waist</th>
-                <th>Length</th>
-                <th>Weight</th>
-              </tr>
-            </thead>
-            <tbody>
-              {womensChart.map(row => (
-                <tr key={row.size}>
-                  <td><span className="size-badge">{row.size}</span></td>
-                  <td>{row.chest}</td>
-                  <td>{row.waist}</td>
-                  <td>{row.length}</td>
-                  <td>{row.weight}</td>
+        {/* Women's */}
+        <div className="policy-card">
+          <h2>Women's Size Chart</h2>
+          <div className="size-table-wrapper">
+            <table className="size-table">
+              <thead>
+                <tr>
+                  <th>Size</th>
+                  <th>Chest</th>
+                  <th>Waist</th>
+                  <th>Length</th>
+                  <th>Weight</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {womensChart.map(row => (
+                  <tr key={row.size}>
+                    <td>{row.size}</td>
+                    <td>{row.chest}</td>
+                    <td>{row.waist}</td>
+                    <td>{row.length}</td>
+                    <td>{row.weight}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      <div className="policy-tip">
-        <strong>Tip:</strong> If you're between sizes, we recommend sizing up for a more relaxed fit or sizing down for a fitted look.
-      </div>
-
-      <div className="policy-contact-banner">
-        <p>Not sure about your size? <Link to="/contact">Ask us →</Link></p>
+        <div className="policy-contact-banner">
+          <p>Not sure about your size? <Link to="/contact">Ask us →</Link></p>
+        </div>
       </div>
     </div>
   );

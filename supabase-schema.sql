@@ -17,12 +17,42 @@ CREATE TABLE IF NOT EXISTS products (
   "isPopular" BOOLEAN DEFAULT false,
   stock INTEGER DEFAULT 0,
   "originalPrice" INTEGER,
+  -- Product type & status
+  "productType" TEXT DEFAULT 'simple',
+  status TEXT DEFAULT 'active',
+  -- SEO fields
+  "seoTitle" TEXT,
+  "seoDescription" TEXT,
+  "seoSlug" TEXT,
+  -- Physical properties
+  weight INTEGER,
+  material TEXT,
+  -- Digital product
+  "digitalFileUrl" TEXT,
+  -- Subscription product
+  "subscriptionInterval" TEXT,
+  "subscriptionPrice" INTEGER,
+  -- Variable product variants (stored as JSONB array)
+  variants JSONB DEFAULT '[]',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- If table already exists, add SKU column:
+-- If products table already exists, run these ALTER statements to add new columns:
+ALTER TABLE products ADD COLUMN IF NOT EXISTS "productType" TEXT DEFAULT 'simple';
+ALTER TABLE products ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active';
+ALTER TABLE products ADD COLUMN IF NOT EXISTS "seoTitle" TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS "seoDescription" TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS "seoSlug" TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS weight INTEGER;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS material TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS "digitalFileUrl" TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS "subscriptionInterval" TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS "subscriptionPrice" INTEGER;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS variants JSONB DEFAULT '[]';
+-- (sku and originalPrice already exist — keep as-is)
 -- ALTER TABLE products ADD COLUMN IF NOT EXISTS sku TEXT UNIQUE;
+
 
 -- Orders Table
 CREATE TABLE IF NOT EXISTS orders (

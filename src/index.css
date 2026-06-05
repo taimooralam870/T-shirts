@@ -1,15 +1,17 @@
 :root {
   /* Brand Colors */
-  --primary: #1d1d1f;
+  --primary: #0f0f0f;
   --primary-hover: #000000;
-  --secondary: #f5f5f7;
-  --accent: #0071e3; /* Apple Blue */
-  --accent-hover: #0077ed;
-  --danger: #ff3b30;
-  --success: #34c759;
+  --secondary: #f8f8f8;
+  --accent: #1a1a1a;
+  --accent-blue: #2563eb;
+  --accent-hover: #1d4ed8;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --gold: #d4a853;
 
   /* Typography */
-  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -21,22 +23,26 @@
   --spacing-3xl: 4rem;
 
   /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.16);
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.14);
   
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 450ms cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 * {
   box-sizing: border-box;
@@ -44,12 +50,17 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-family);
-  background-color: #fafafa;
-  color: #111111;
-  line-height: 1.5;
+  background-color: #ffffff;
+  color: #0f0f0f;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -70,20 +81,29 @@ img {
   display: block;
 }
 
-/* Utilities */
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* ── Container ── */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 0.75rem; /* 12px mobile padding */
+  padding: 0 1rem;
 }
 
 @media (min-width: 768px) {
-  .container {
-    padding: 0 1rem; /* 16px on tablets+ */
-  }
+  .container { padding: 0 1.5rem; }
 }
 
+@media (min-width: 1280px) {
+  .container { padding: 0 2rem; }
+}
+
+/* ── Utilities ── */
 .text-center { text-align: center; }
 .text-primary { color: var(--primary); }
 .text-muted { color: #6b7280; }
@@ -92,10 +112,15 @@ img {
 .mb-2 { margin-bottom: var(--spacing-md); }
 .mb-3 { margin-bottom: var(--spacing-lg); }
 .mb-4 { margin-bottom: var(--spacing-xl); }
+.mt-2 { margin-top: var(--spacing-md); }
 .mt-4 { margin-top: var(--spacing-xl); }
+.ml-2 { margin-left: var(--spacing-sm); }
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
 
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
+.flex-1 { flex: 1; }
 .items-center { align-items: center; }
 .justify-center { justify-content: center; }
 .justify-between { justify-content: space-between; }
@@ -119,52 +144,25 @@ img {
   padding: var(--spacing-3xl) 0;
 }
 
-/* Additional Utility Classes */
 .relative { position: relative; }
 .z-10 { z-index: 10; }
-.flex-1 { flex: 1; }
-.text-accent { color: var(--accent); }
+.text-accent { color: var(--accent-blue); }
 .text-success { color: var(--success); }
 .text-sm { font-size: 0.875rem; }
 .font-medium { font-weight: 500; }
 .underline { text-decoration: underline; }
 .pt-4 { padding-top: var(--spacing-xl); }
-.mt-2 { margin-top: var(--spacing-md); }
-.ml-2 { margin-left: var(--spacing-sm); }
-.w-full { width: 100%; }
-.min-h-screen { min-height: 100vh; }
-
-/* Page transitions */
-.page-enter {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.page-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
-}
-
-/* Smooth page fade-in for all pages */
-@keyframes pageFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* Badge */
 .badge {
-  background-color: var(--accent);
+  background-color: var(--primary);
   color: white;
-  padding: 0.1rem 0.5rem;
+  padding: 0.2rem 0.65rem;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 /* App Layout */
@@ -173,6 +171,61 @@ img {
   flex-direction: column;
   min-height: 100vh;
 }
-.flex-grow {
-  flex-grow: 1;
+.flex-grow { flex-grow: 1; }
+
+/* ── Page Transitions ── */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── Section Divider ── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 0.875rem;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: #d1d5db;
+}
+
+/* ── Loading Spinner ── */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ── Page Wrapper ── */
+.page-fade {
+  animation: pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

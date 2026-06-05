@@ -3,7 +3,17 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Check if Supabase credentials are properly configured
+export const isSupabaseConfigured =
+  typeof supabaseUrl === 'string' &&
+  supabaseUrl.startsWith('https://') &&
+  typeof supabaseKey === 'string' &&
+  supabaseKey.length > 10;
+
+// Only create the client if credentials exist, otherwise use a dummy fallback
+export const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseKey)
+  : createClient('https://placeholder.supabase.co', 'placeholder-key');
 
 // Helper functions for products
 export const getProducts = async () => {

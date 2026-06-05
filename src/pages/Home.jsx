@@ -23,7 +23,7 @@ const Home = () => {
 
         {/* Glassmorphism Content */}
         <div className="hero-premium-content glass-panel">
-          <span className="premium-badge">New Collection 2026</span>
+          <span className="premium-eyebrow">New Collection 2026</span>
           <h1 className="premium-title">Elevate Your<br/>Everyday.</h1>
           <p className="premium-subtitle">
             Discover garments crafted with uncompromising precision and the world's finest materials.
@@ -65,21 +65,23 @@ const Home = () => {
           <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80&w=1200" alt="Men" />
           <div className="split-overlay">
             <h2>MENSWEAR</h2>
+            <span className="split-overlay-btn">Shop Now →</span>
           </div>
         </Link>
         <Link to="/shop?category=Women" className="split-pane">
           <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&q=80&w=1200" alt="Women" />
           <div className="split-overlay">
             <h2>WOMENSWEAR</h2>
+            <span className="split-overlay-btn">Shop Now →</span>
           </div>
         </Link>
       </section>
 
-      {/* Minimal Footer CTA */}
       <section className="minimal-cta">
-        <h2>Join the club.</h2>
+        <h2>Stay in the loop.</h2>
+        <p className="minimal-cta-sub">New drops, exclusive offers, and style tips — straight to your inbox.</p>
         <form className="minimal-subscribe" onSubmit={(e) => e.preventDefault()}>
-          <input type="email" placeholder="Email address" required />
+          <input type="email" placeholder="your@email.com" required />
           <button type="submit">→</button>
         </form>
       </section>
