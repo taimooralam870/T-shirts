@@ -3908,68 +3908,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-            {/* ── KPI Cards ── */}
-            <div className="analytics-kpi-row">
-              <div className="analytics-kpi-card">
-                <div className="kpi-icon" style={{background:'#ede9fe'}}><Activity size={22} color="#7c3aed"/></div>
-                <div className="kpi-body">
-                  <div className="kpi-value">Rs. {analyticsData.totalRevenue.toLocaleString()}</div>
-                  <div className="kpi-label">Total Revenue</div>
-                  <Trend current={analyticsData.totalRevenue} previous={analyticsData.prevRevenue}/>
-                </div>
-              </div>
-              <div className="analytics-kpi-card">
-                <div className="kpi-icon" style={{background:'#dcfce7'}}><CheckCircle2 size={22} color="#16a34a"/></div>
-                <div className="kpi-body">
-                  <div className="kpi-value">Rs. {analyticsData.deliveredRev.toLocaleString()}</div>
-                  <div className="kpi-label">Confirmed Revenue</div>
-                </div>
-              </div>
-              <div className="analytics-kpi-card">
-                <div className="kpi-icon" style={{background:'#fef9c3'}}><ShoppingBag size={22} color="#ca8a04"/></div>
-                <div className="kpi-body">
-                  <div className="kpi-value">{analyticsData.totalOrders}</div>
-                  <div className="kpi-label">Orders</div>
-                  <Trend current={analyticsData.totalOrders} previous={analyticsData.prevOrders}/>
-                </div>
-              </div>
-              <div className="analytics-kpi-card">
-                <div className="kpi-icon" style={{background:'#dbeafe'}}><DollarSign size={22} color="#2563eb"/></div>
-                <div className="kpi-body">
-                  <div className="kpi-value">Rs. {analyticsData.avgOrderValue.toLocaleString()}</div>
-                  <div className="kpi-label">Avg Order Value</div>
-                  <Trend current={analyticsData.avgOrderValue} previous={analyticsData.prevAvgOrder}/>
-                </div>
-              </div>
-              <div className="analytics-kpi-card">
-                <div className="kpi-icon" style={{background:'#fce7f3'}}><Repeat2 size={22} color="#db2777"/></div>
-                <div className="kpi-body">
-                  <div className="kpi-value">{analyticsData.repeatRate}%</div>
-                  <div className="kpi-label">Repeat Customer Rate</div>
-                </div>
-              </div>
-              <div className="analytics-kpi-card">
-                <div className="kpi-icon" style={{background:'#fee2e2'}}><Target size={22} color="#ef4444"/></div>
-                <div className="kpi-body">
-                  <div className="kpi-value">Rs. {analyticsData.cancelledLoss.toLocaleString()}</div>
-                  <div className="kpi-label">Cancelled Loss</div>
-                </div>
-              </div>
-            </div>
-
-            {/* ── Revenue Chart (full width) ── */}
-            <div className="analytics-card full-width">
-              <div className="analytics-card-header">
-                <h3>
-                  <TrendingUp size={17} style={{verticalAlign:'middle',marginRight:6,color:'#6366f1'}}/>
-                  Revenue Over Time
-                </h3>
-                <span className="chart-sub">Rs. {analyticsData.totalRevenue.toLocaleString()} total</span>
-              </div>
-              <ProBarChart data={analyticsData.revenueChart} color="#6366f1" height={200}/>
-            </div>
-
-            {/* ══ COUPONS ══ */}
+        {/* ══ COUPONS ══ */}
         {activeTab==='coupons' && (
           <div className="admin-tab-content admin-section coupons-section">
             <div className="admin-section-header">
