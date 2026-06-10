@@ -4589,3 +4589,371 @@
     gap: 0.5rem;
   }
 }
+
+
+/* ═══════════════════════════════════════════════
+   CUSTOMER & ORDER MANAGEMENT STYLES
+═══════════════════════════════════════════════ */
+
+/* ── Customer Edit Modal ── */
+.customer-edit-modal {
+  max-width: 650px;
+}
+
+.customer-edit-actions {
+  display: flex;
+  gap: 0.625rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e1e3e5;
+}
+
+/* ── Order Tracking Modal ── */
+.tracking-modal {
+  max-width: 520px;
+}
+
+.admin-form-hint {
+  font-size: 0.75rem;
+  color: #8c9196;
+  margin-top: 0.25rem;
+}
+
+.tracking-modal-actions {
+  display: flex;
+  gap: 0.625rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e1e3e5;
+}
+
+/* ── Customer Profile Actions ── */
+.cust-profile-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e1e3e5;
+}
+
+/* ── Order Detail Actions ── */
+.order-detail-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e1e3e5;
+}
+
+/* ── Order Tracking Display ── */
+.order-tracking-display {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e1e3e5;
+}
+
+.tracking-info-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: #f6f6f7;
+  border: 1px solid #e1e3e5;
+  border-radius: 10px;
+  flex-wrap: wrap;
+}
+
+.tracking-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tracking-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6d7175;
+}
+
+.tracking-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #202223;
+  font-family: 'SF Mono', 'Courier New', monospace;
+}
+
+.tracking-link-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.875rem;
+  background: #008060;
+  color: white;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.tracking-link-btn:hover {
+  background: #006e52;
+}
+
+/* ── Order Action Icon Button ── */
+.order-action-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  border: 1px solid #e1e3e5;
+  background: #fff;
+  color: #6d7175;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.order-action-icon-btn:hover {
+  background: #f6f6f7;
+  color: #202223;
+  border-color: #c9cccf;
+}
+
+/* ── Customer Status Badge ── */
+.admin-order-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* ── Expanded Order/Customer Sections ── */
+.cust-profile-expanded {
+  padding: 1.25rem;
+  border-top: 1px solid #e1e3e5;
+  background: #fff;
+}
+
+.cust-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cust-profile-block {
+  padding: 0.875rem;
+  background: #f6f6f7;
+  border: 1px solid #e1e3e5;
+  border-radius: 8px;
+}
+
+.cust-block-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6d7175;
+  margin-bottom: 0.625rem;
+}
+
+.cust-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: #202223;
+  margin-bottom: 0.35rem;
+}
+
+.cust-group-select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #c9cccf;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  background: #fff;
+  outline: none;
+  color: #202223;
+  font-family: inherit;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.cust-consent-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.cust-consent-toggle input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  accent-color: #008060;
+}
+
+/* ── Customer Notes ── */
+.cust-notes-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e1e3e5;
+}
+
+.cust-notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.cust-notes-empty {
+  font-size: 0.82rem;
+  color: #8c9196;
+  font-style: italic;
+}
+
+.cust-note-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: #f6f6f7;
+  border: 1px solid #e1e3e5;
+  border-radius: 8px;
+}
+
+.cust-note-text {
+  flex: 1;
+  font-size: 0.85rem;
+  color: #202223;
+}
+
+.cust-note-time {
+  font-size: 0.72rem;
+  color: #8c9196;
+  white-space: nowrap;
+}
+
+.cust-note-del {
+  background: none;
+  border: none;
+  color: #d72c0d;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 4px;
+  display: flex;
+  transition: background 0.15s;
+}
+
+.cust-note-del:hover {
+  background: rgba(215, 44, 13, 0.1);
+}
+
+.cust-note-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cust-note-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #c9cccf;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.cust-note-input:focus {
+  border-color: #008060;
+  box-shadow: 0 0 0 3px rgba(0, 128, 96, 0.1);
+}
+
+/* ── Customer Badge Styles ── */
+.cust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.cust-badge.vip {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #78350f;
+}
+
+.cust-badge.loyal {
+  background: #e3f1eb;
+  color: #007a5c;
+}
+
+.cust-badge.at-risk {
+  background: #fdf0ef;
+  color: #d72c0d;
+}
+
+.cust-badge.regular {
+  background: #f6f6f7;
+  color: #6d7175;
+}
+
+/* ── Customer Avatar ── */
+.cust-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Responsive Adjustments ── */
+@media (max-width: 768px) {
+  .customer-edit-actions,
+  .tracking-modal-actions,
+  .cust-profile-actions,
+  .order-detail-actions {
+    flex-direction: column;
+  }
+  
+  .shopify-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .tracking-info-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .tracking-link-btn {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+}

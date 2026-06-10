@@ -223,6 +223,17 @@ const AdminDashboard = () => {
   /* ── Analytics sub-tab ── */
   const [analyticsSubTab,  setAnalyticsSubTab]  = useState('metrics');
 
+  /* ── Customer Edit Modal ── */
+  const [editingCustomer, setEditingCustomer] = useState(null);
+  const [customerEditForm, setCustomerEditForm] = useState({
+    email: '', name: '', phone: '', address: '', city: '', province: '', postal_code: ''
+  });
+
+  /* ── Order Tracking ── */
+  const [orderTracking, setOrderTracking] = useState({}); // { orderId: {trackingNumber, courier, trackingUrl} }
+  const [editingTracking, setEditingTracking] = useState(null);
+  const [trackingForm, setTrackingForm] = useState({ trackingNumber: '', courier: 'TCS', trackingUrl: '' });
+
   /* ── Coupons state ── */
   const EMPTY_COUPON = { code: '', type: 'percentage', value: '', min_order: '', max_uses: '', expires_at: '', is_active: true };
   const [coupons,        setCoupons]        = useState([]);
@@ -499,6 +510,96 @@ const AdminDashboard = () => {
   const toggleCouponActive = async (coupon) => {
     await supabase.from('coupons').update({ is_active: !coupon.is_active }).eq('id', coupon.id);
     fetchCoupons(); showToast(coupon.is_active ? 'Coupon disabled!' : 'Coupon enabled!');
+  };
+
+  /* ── Customer Edit Functions ── */
+  const openEditCustomer = (user) => {
+    setEditingCustomer(user);
+    setCustomerEditForm({
+      email: user.email,
+      name: user.name,
+      phone: user.phone,
+      address: user.orders[0]?.address || '',
+      city: user.city,
+      province: user.province,
+      postal_code: user.orders[0]?.postal_code || ''
+    });
+  };
+
+  const closeEditCustomer = () => {
+    setEditingCustomer(null);
+    setCustomerEditForm({ email: '', name: '', phone: '', address: '', city: '', province: '', postal_code: '' });
+  };
+
+  const handleCustomerSave = async () => {
+    // Update all orders for this customer with new contact info
+    const customerOrders = orders.filter(o => o.email === editingCustomer.email);
+    const [firstName, ...lastNameParts] = customerEditForm.name.trim().split(' ');
+    const lastName = lastNameParts.join(' ');
+    
+    await Promise.all(
+      customerOrders.map(order =>
+        supabase.from('orders').update({
+          first_name: firstName,
+          last_name: lastName,
+          email: customerEditForm.email,
+          phone: customerEditForm.phone,
+          address: customerEditForm.address,
+          city: customerEditForm.city,
+          province: customerEditForm.province,
+          postal_code: customerEditForm.postal_code
+        }).eq('id', order.id)
+      )
+    );
+    
+    await fetchOrders();
+    showToast('Customer details updated!');
+    closeEditCustomer();
+  };
+
+  /* ── Customer Communication ── */
+  const sendWhatsApp = (phone, message) => {
+    const cleanPhone = phone.replace(/[^\d]/g, '');
+    const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
+
+  const sendEmail = (email, subject, body) => {
+    const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = url;
+  };
+
+  /* ── Order Tracking Functions ── */
+  const openEditTracking = (order) => {
+    setEditingTracking(order.id);
+    const existing = orderTracking[order.id] || {};
+    setTrackingForm({
+      trackingNumber: existing.trackingNumber || '',
+      courier: existing.courier || 'TCS',
+      trackingUrl: existing.trackingUrl || ''
+    });
+  };
+
+  const closeEditTracking = () => {
+    setEditingTracking(null);
+    setTrackingForm({ trackingNumber: '', courier: 'TCS', trackingUrl: '' });
+  };
+
+  const handleTrackingSave = async () => {
+    setOrderTracking(prev => ({
+      ...prev,
+      [editingTracking]: trackingForm
+    }));
+    
+    // Optionally update in database (you can add a tracking_info column to orders table)
+    await supabase.from('orders').update({
+      tracking_number: trackingForm.trackingNumber,
+      courier: trackingForm.courier,
+      tracking_url: trackingForm.trackingUrl
+    }).eq('id', editingTracking);
+    
+    showToast('Tracking information saved!');
+    closeEditTracking();
   };
 
   /* ── Users derived from orders ── */
@@ -1819,6 +1920,44 @@ const AdminDashboard = () => {
                       </div>
                       {expandedOrder===order.id && (
                         <div className="admin-order-details">
+                          {/* Action Buttons Row */}
+                          <div className="order-detail-actions">
+                            <button className="shopify-btn primary" onClick={()=>openEditTracking(order)}>
+                              <Truck size={14}/> {orderTracking[order.id]?.trackingNumber ? 'Update Tracking' : 'Add Tracking'}
+                            </button>
+                            <button className="shopify-btn secondary" onClick={()=>sendWhatsApp(order.phone, `Hi ${order.first_name}, your order ${order.order_id} status: ${order.status}. Track: ${orderTracking[order.id]?.trackingUrl || 'Processing'}`)}>
+                              <PhoneCall size={14}/> WhatsApp
+                            </button>
+                            <button className="shopify-btn secondary" onClick={()=>sendEmail(order.email, `Order Update: ${order.order_id}`, `Dear ${order.first_name},\n\nYour order ${order.order_id} is ${order.status}.\n\nThank you for shopping with us!`)}>
+                              <Mail size={14}/> Email
+                            </button>
+                            <button className="shopify-btn secondary" onClick={()=>printInvoice(order)}>
+                              <Printer size={14}/> Print Invoice
+                            </button>
+                          </div>
+
+                          {/* Tracking Info Display */}
+                          {orderTracking[order.id]?.trackingNumber && (
+                            <div className="order-tracking-display">
+                              <div className="tracking-info-card">
+                                <Truck size={16} style={{color:'#6366f1'}}/>
+                                <div className="tracking-info-body">
+                                  <div className="tracking-label">Tracking Number</div>
+                                  <div className="tracking-value">{orderTracking[order.id].trackingNumber}</div>
+                                </div>
+                                <div className="tracking-info-body">
+                                  <div className="tracking-label">Courier</div>
+                                  <div className="tracking-value">{orderTracking[order.id].courier}</div>
+                                </div>
+                                {orderTracking[order.id].trackingUrl && (
+                                  <a href={orderTracking[order.id].trackingUrl} target="_blank" rel="noopener noreferrer" className="tracking-link-btn">
+                                    <ExternalLink size={14}/> Track
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
                           <div className="admin-order-info-grid">
                             <div><h4>Contact</h4><p><Mail size={11} style={{verticalAlign:'middle',marginRight:4}}/>{order.email}</p><p><PhoneCall size={11} style={{verticalAlign:'middle',marginRight:4}}/>{order.phone}</p></div>
                             <div><h4>Address</h4><p><MapPin size={11} style={{verticalAlign:'middle',marginRight:4}}/>{order.address}</p><p>{order.city}, {order.province} {order.postal_code}</p></div>
@@ -2274,6 +2413,19 @@ const AdminDashboard = () => {
 
                           {expandedUser===user.email && (
                             <div className="cust-profile-expanded">
+                              {/* Action Buttons */}
+                              <div className="cust-profile-actions">
+                                <button className="shopify-btn primary" onClick={()=>openEditCustomer(user)}>
+                                  <Pencil size={14}/> Edit Customer
+                                </button>
+                                <button className="shopify-btn secondary" onClick={()=>sendWhatsApp(user.phone, `Hi ${user.name.split(' ')[0]}, Thank you for shopping with us!`)}>
+                                  <PhoneCall size={14}/> WhatsApp
+                                </button>
+                                <button className="shopify-btn secondary" onClick={()=>sendEmail(user.email, 'Thank you for your order', `Dear ${user.name},\n\nThank you for shopping with T-Shirts Store.`)}>
+                                  <Mail size={14}/> Email
+                                </button>
+                              </div>
+
                               {/* Profile details */}
                               <div className="cust-profile-grid">
                                 <div className="cust-profile-block">
@@ -5470,6 +5622,123 @@ const AdminDashboard = () => {
               <div className="invoice-footer">
                 <p>Thank you for shopping with T-Shirts Store!</p>
                 <p>For queries: support@tshirtsstore.pk</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+
+      {/* ════ CUSTOMER EDIT MODAL ════ */}
+      {editingCustomer && (
+        <div className="admin-modal-overlay" onClick={closeEditCustomer}>
+          <div className="admin-modal customer-edit-modal" onClick={e=>e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h2><Users size={20}/> Edit Customer</h2>
+              <button className="admin-modal-close" onClick={closeEditCustomer}><X size={20}/></button>
+            </div>
+            
+            <div className="admin-modal-body">
+              <div className="admin-form-row">
+                <div className="admin-form-group">
+                  <label>Full Name</label>
+                  <input type="text" value={customerEditForm.name} onChange={e=>setCustomerEditForm(prev=>({...prev, name:e.target.value}))} placeholder="John Doe"/>
+                </div>
+                <div className="admin-form-group">
+                  <label>Email</label>
+                  <input type="email" value={customerEditForm.email} onChange={e=>setCustomerEditForm(prev=>({...prev, email:e.target.value}))} placeholder="john@example.com"/>
+                </div>
+              </div>
+
+              <div className="admin-form-row">
+                <div className="admin-form-group">
+                  <label>Phone</label>
+                  <input type="tel" value={customerEditForm.phone} onChange={e=>setCustomerEditForm(prev=>({...prev, phone:e.target.value}))} placeholder="+92 300 1234567"/>
+                </div>
+                <div className="admin-form-group">
+                  <label>City</label>
+                  <input type="text" value={customerEditForm.city} onChange={e=>setCustomerEditForm(prev=>({...prev, city:e.target.value}))} placeholder="Karachi"/>
+                </div>
+              </div>
+
+              <div className="admin-form-row">
+                <div className="admin-form-group">
+                  <label>Province</label>
+                  <select value={customerEditForm.province} onChange={e=>setCustomerEditForm(prev=>({...prev, province:e.target.value}))}>
+                    <option value="Sindh">Sindh</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="KPK">KPK</option>
+                    <option value="Balochistan">Balochistan</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="AJK">AJK</option>
+                  </select>
+                </div>
+                <div className="admin-form-group">
+                  <label>Postal Code</label>
+                  <input type="text" value={customerEditForm.postal_code} onChange={e=>setCustomerEditForm(prev=>({...prev, postal_code:e.target.value}))} placeholder="75500"/>
+                </div>
+              </div>
+
+              <div className="admin-form-group">
+                <label>Address</label>
+                <textarea value={customerEditForm.address} onChange={e=>setCustomerEditForm(prev=>({...prev, address:e.target.value}))} placeholder="Street address, house number, etc." rows={3}/>
+              </div>
+
+              <div className="customer-edit-actions">
+                <button className="shopify-btn primary" onClick={handleCustomerSave}>
+                  <Check size={16}/> Save Changes
+                </button>
+                <button className="shopify-btn secondary" onClick={closeEditCustomer}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ════ ORDER TRACKING MODAL ════ */}
+      {editingTracking && (
+        <div className="admin-modal-overlay" onClick={closeEditTracking}>
+          <div className="admin-modal tracking-modal" onClick={e=>e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h2><Truck size={20}/> Add Tracking Information</h2>
+              <button className="admin-modal-close" onClick={closeEditTracking}><X size={20}/></button>
+            </div>
+            
+            <div className="admin-modal-body">
+              <div className="admin-form-group">
+                <label>Courier Service</label>
+                <select value={trackingForm.courier} onChange={e=>setTrackingForm(prev=>({...prev, courier:e.target.value}))}>
+                  <option value="TCS">TCS Express</option>
+                  <option value="Leopards">Leopards Courier</option>
+                  <option value="M&P">M&P Express</option>
+                  <option value="Call Courier">Call Courier</option>
+                  <option value="Blue Ex">Blue Ex</option>
+                  <option value="PostEx">PostEx</option>
+                  <option value="Trax">Trax</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div className="admin-form-group">
+                <label>Tracking Number</label>
+                <input type="text" value={trackingForm.trackingNumber} onChange={e=>setTrackingForm(prev=>({...prev, trackingNumber:e.target.value}))} placeholder="Enter tracking number"/>
+              </div>
+
+              <div className="admin-form-group">
+                <label>Tracking URL (Optional)</label>
+                <input type="url" value={trackingForm.trackingUrl} onChange={e=>setTrackingForm(prev=>({...prev, trackingUrl:e.target.value}))} placeholder="https://tracking.courier.com/..."/>
+                <span className="admin-form-hint">Paste the direct tracking link from courier website</span>
+              </div>
+
+              <div className="tracking-modal-actions">
+                <button className="shopify-btn primary" onClick={handleTrackingSave}>
+                  <Check size={16}/> Save Tracking Info
+                </button>
+                <button className="shopify-btn secondary" onClick={closeEditTracking}>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
