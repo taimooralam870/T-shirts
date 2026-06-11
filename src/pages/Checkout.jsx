@@ -21,7 +21,8 @@ const Checkout = () => {
     city: '',
     province: '',
     postalCode: '',
-    paymentMethod: 'cod'
+    paymentMethod: 'cod',
+    orderNotes: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -134,7 +135,8 @@ const Checkout = () => {
       total: finalTotal,
       coupon_code: appliedCoupon?.code || null,
       discount: discountAmount,
-      status: 'pending'
+      status: 'pending',
+      order_notes: formData.orderNotes || null
     }]);
 
     if (orderError) {
@@ -327,6 +329,34 @@ const Checkout = () => {
                   </div>
                 </div>
               </label>
+            </div>
+          </div>
+
+          {/* Order Notes */}
+          <div className="checkout-section">
+            <h2>Order Notes (Optional)</h2>
+            <div className="form-group full-width">
+              <label htmlFor="orderNotes">Special Instructions or Message</label>
+              <textarea 
+                id="orderNotes" 
+                name="orderNotes" 
+                value={formData.orderNotes} 
+                onChange={handleChange}
+                placeholder="Add any special instructions for your order (gift wrapping, specific delivery time, etc.)"
+                rows="4"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  fontSize: '0.95rem',
+                  fontFamily: 'inherit',
+                  resize: 'vertical'
+                }}
+              />
+              <span className="form-hint" style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '0.5rem', display: 'block' }}>
+                Need help? Visit our <Link to="/support" style={{ color: '#6366f1', textDecoration: 'none' }}>Customer Support</Link> page
+              </span>
             </div>
           </div>
         </div>

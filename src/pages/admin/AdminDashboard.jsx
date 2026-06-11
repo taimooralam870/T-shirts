@@ -3619,7 +3619,7 @@ const AdminDashboard = () => {
                 {products.filter(p=>p.stock<=5).length>0 && (
                   <div className="analytics-card full-width">
                     <div className="analytics-card-header">
-                      <h3><AlertTriangle size={15} style={{verticalAlign:'middle',marginRight:6,color:'#f59e0b'}}/> Low Stock / Out of Stock Products</h3>
+                      <h3><AlertTriangle size={15} style={{verticalAlign:'middle',marginRight:6,color:'#f59e0b'}}/> Low Stock or Out of Stock Products</h3>
                     </div>
                     <div className="admin-table-wrapper">
                       <table className="admin-table">
@@ -5304,7 +5304,7 @@ const AdminDashboard = () => {
               </div>
               <div className="admin-form-row" style={{marginBottom:'0.5rem'}}>
                 <label className="admin-checkbox-label"><input type="checkbox" name="isNewArrival" checked={formData.isNewArrival} onChange={handleFormChange}/> New Arrival</label>
-                <label className="admin-checkbox-label"><input type="checkbox" name="isPopular" checked={formData.isPopular} onChange={handleFormChange}/> Popular / Featured</label>
+                <label className="admin-checkbox-label"><input type="checkbox" name="isPopular" checked={formData.isPopular} onChange={handleFormChange}/> Popular or Featured</label>
               </div>
 
               {/* ─ Media ─ */}
@@ -5539,7 +5539,7 @@ const AdminDashboard = () => {
             <div className="invoice-modal-toolbar no-print">
               <h2>Invoice Preview</h2>
               <div style={{display:'flex',gap:'0.5rem'}}>
-                <button className="shopify-btn primary" onClick={()=>window.print()}><Printer size={15}/> Print / Save PDF</button>
+                <button className="shopify-btn primary" onClick={()=>window.print()}><Printer size={15}/> Print or Save PDF</button>
                 <button className="shopify-btn secondary" onClick={()=>setPrintOrder(null)}><X size={15}/> Close</button>
               </div>
             </div>
@@ -5627,7 +5627,6 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
-    </div>
 
       {/* ════ CUSTOMER EDIT MODAL ════ */}
       {editingCustomer && (
